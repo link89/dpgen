@@ -1956,7 +1956,14 @@ def make_fp_cp2k (iter_index,
     else:
         fp_params = jdata['fp_params']
     cwd = os.getcwd()
+    charges = jdata.get("charges", None)
+    uks = jdata.get("uks", None)
     for ii in fp_tasks:
+        ss = int(ii.split(".")[-2])
+        if charges is not None:
+            fp_params["FORCE_EVAL"]["DFT"]["CHARGE"] = charges[ss]
+        if charges is not None:
+            fp_params["FORCE_EVAL"]["DFT"]["UKS"] = uks[ss]
         os.chdir(ii)
         sys_data = dpdata.System('POSCAR').data
         # make input for every task
